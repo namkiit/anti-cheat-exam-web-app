@@ -1,0 +1,90 @@
+/* HERO */
+
+.heroSection {
+  background: url(/images/hero_bg.png) no-repeat;
+  background-size: 100% 80%;
+  min-height: 100%;
+  padding-top: 6rem;
+  padding-top: 10%;
+
+  .heroText {
+    max-width: 50%;
+  }
+
+  h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: black;
+    margin: 2rem auto;
+    text-transform: uppercase;
+  }
+
+  p {
+    color: #777;
+    margin: 2rem auto;
+  }
+
+  .buttonGroup {
+    padding: 1rem 0;
+  }
+
+  button {
+    margin-right: 1rem;
+  }
+
+  .phone {
+    width: 300px;
+    height: auto;
+    // margin-top: 5rem;
+
+    img {
+      max-width: 100%;
+    }
+  }
+}
+
+.featureSection {
+  background: url(/images/features.svg) no-repeat;
+  padding: 5% 0 10%;
+
+  h1 {
+    font-size: 3rem;
+    padding-bottom: 3rem;
+  }
+
+  h3 {
+    margin-bottom: 1rem;
+  }
+
+  svg {
+    width: 60px;
+    height: 60px;
+    color: #8190ff;
+
+    stroke-width: 2;
+  }
+}
+
+.contactSection {
+  background: url(/images/features.svg) no-repeat;
+  padding: 5% 0 10%;
+
+  h1 {
+    font-size: 3rem;
+    padding-bottom: 3rem;
+  }
+
+  .form {
+    h1 {
+      text-align: center;
+    }
+
+    .formFields > div {
+      padding-bottom: 1rem;
+    }
+  }
+
+  .button {
+    text-align: center;
+  }
+}
