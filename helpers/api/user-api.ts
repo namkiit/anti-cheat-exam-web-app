@@ -34,6 +34,7 @@ const submitExam = async (
   answers: string[],
   token: string
 ) => {
+  console.log({ studentId, examId, answers })
   try {
     const res = await fetch(`${BASE_URL}/submitExam/${studentId}`, {
       method: "POST",

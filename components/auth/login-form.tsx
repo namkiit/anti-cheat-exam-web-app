@@ -78,6 +78,8 @@ const LoginForm: React.FC<LoginFormProps> = ({ loadingBarRef }) => {
         password: password,
       });
 
+      console.log(result)
+      
       if (result.error) {
         throw new Error(result.error);
       }

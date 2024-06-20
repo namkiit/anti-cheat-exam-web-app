@@ -128,8 +128,6 @@ const ExamCard: React.FC<ExamCardProps> = ({ exam, loadingBarRef }) => {
                 mb: 1,
               }}
               onClick={() => {
-                console.log("LOL");
-
                 loadingBarRef.current.continuousStart(50);
               }}
             >

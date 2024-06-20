@@ -28,7 +28,6 @@ const AppBarExam: React.FC<AppBarExamProps> = ({ examName, loadingBarRef }) => {
   const onEndExam = async () => {
     setIsLoading(true);
     loadingBarRef.current.continuousStart(50);
-    console.log(session.data?.user.id)
     try {
       const result = await submitExam(
         session.data?.user.id,

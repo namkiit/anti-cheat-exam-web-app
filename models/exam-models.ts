@@ -1,6 +1,6 @@
 export interface Question {
   title: string;
-  options: any;
+  answers: any;
 }
 
 export interface Exam {

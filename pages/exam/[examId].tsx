@@ -160,30 +160,33 @@ const ExamPage: React.FC<ExamPageProps> = ({ exam, error }) => {
 
     if (activeExam.tabChangeCount >= 3) {
       toast("Bạn đã chuyển tab hơn 3 lần, hệ thống giờ sẽ nộp bài kiểm tra !");
-      endExam()
+      // endExam()
     }
   };
 
   const endExam = async () => {
-    setIsLoading(true);
-    loadingBarRef.current.continuousStart(50);
+    // setIsLoading(true);
+    // loadingBarRef.current.continuousStart(50);
     console.log(session.data?.user.id)
-    try {
-      const result = await submitExam(
-        session.data?.user.id,
-        activeExam.exam._id,
-        activeExam.answerKeys,
-        session.data?.user.token
-      );
 
-      router.replace("/dashboard");
-    } catch (e) {
-      console.log(e);
-      toast(e.message || "Không nộp được bài kiểm tra, vui lòng thử lại !");
-    } finally {
-      setIsLoading(false);
-      loadingBarRef.current.continuousStart(50);
-    }
+    console.log(activeExam)
+
+    // try {
+    //   const result = await submitExam(
+    //     session.data?.user.id,
+    //     activeExam.exam._id,
+    //     activeExam.answerKeys,
+    //     session.data?.user.token
+    //   );
+
+    //   router.replace("/dashboard");
+    // } catch (e) {
+    //   console.log(e);
+    //   toast(e.message || "Không nộp được bài kiểm tra, vui lòng thử lại !");
+    // } finally {
+    //   setIsLoading(false);
+    //   loadingBarRef.current.continuousStart(50);
+    // }
   };
 
   if (error) {
@@ -286,6 +289,8 @@ const getServerSideProps: GetServerSideProps = async (context) => {
       examId.toString(),
       session.user.token
     );
+
+    console.log(exam)
 
     if (!exam) {
       throw new Error("Không lấy được bài kiểm tra !");

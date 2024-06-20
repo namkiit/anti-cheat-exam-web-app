@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks";
 import { examActions } from "../../store/exam-store";
 import classes from "./question-widget.module.scss";
 
-interface QuestionWidgetProp {}
+interface QuestionWidgetProp { }
 
 const QuestionWidget: React.FC<QuestionWidgetProp> = () => {
   const dispatch = useAppDispatch();
@@ -57,18 +57,17 @@ const QuestionWidget: React.FC<QuestionWidgetProp> = () => {
             value={answerKeys[currentQuestion]}
             onChange={onAnswerChange}
           >
-            {Object.entries(question.options).map(
-              ([option, label]: [string, string]) => {
-                return (
-                  <FormControlLabel
-                    key={option}
-                    value={option}
-                    control={<Radio />}
-                    label={label}
-                  />
-                );
-              }
-            )}
+            {question.answers.map(({ text, label }) => {
+              return (
+                <FormControlLabel
+                  key={label}
+                  value={label}
+                  control={<Radio />}
+                  label={text}
+                />
+              );
+            })
+            }
           </RadioGroup>
         </FormControl>
       </div>
