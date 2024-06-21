@@ -5,12 +5,10 @@ export interface ExamStore {
   activeExam: {
     exam: Exam;
     currentQuestion: number;
-    leftExamCount: number;
     tabChangeCount: number;
     didLeaveExam?: boolean;
     answerKeys: any[];
-    countdown?: any;
-    expiresOn: number;
+    expiresIn: number;
   };
   assignedExams: AssignedExam[];
 }
@@ -28,12 +26,10 @@ const examSlice = createSlice({
       const activeExam: ExamStore["activeExam"] = {
         exam: action.payload,
         currentQuestion: 0,
-        leftExamCount: 0,
         tabChangeCount: 0,
         didLeaveExam: false,
         answerKeys: Array(action.payload.questionCount).fill(null),
-        countdown: "",
-        expiresOn: new Date().getSeconds() + action.payload.duration,
+        expiresIn: new Date().getSeconds() + action.payload.duration,
       };
 
       state.activeExam = activeExam;

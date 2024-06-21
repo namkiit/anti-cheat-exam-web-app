@@ -15,9 +15,7 @@ import { toast } from "react-toastify";
 import {
   getBrowserDocumentHiddenProp,
   getBrowserVisibilityProp,
-  getVisibilityEventNames,
-  usePageVisibility,
-} from "../../helpers/app/visibility-event";
+} from "../../helpers/app/visibility-events";
 import WarningModal from "../../components/exam/exam-modals";
 import { useRouter } from "next/router";
 import Head from "next/head";

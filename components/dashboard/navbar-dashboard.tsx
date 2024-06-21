@@ -48,7 +48,7 @@ const NavBarDashboard: React.FC<NavBarDashboardProps> = (props) => {
   const handleLogout = async () => {
     loadingBarRef.current.continuousStart(50);
     await signOut({ redirect: false });
-    await router.replace("/auth/login");
+    router.replace("/auth/login");
   };
 
   const drawer = (
