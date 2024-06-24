@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AssignedExam, Exam } from "../models/exam-models";
+import { AnsweredQuestion, AssignedExam, Exam } from "../models/exam-models";
 
 export interface ExamStore {
   activeExam: {
@@ -7,7 +7,8 @@ export interface ExamStore {
     currentQuestion: number;
     tabChangeCount: number;
     didLeaveExam?: boolean;
-    answerKeys: any[];
+    answerKeys: AnsweredQuestion[];
+    score: number;
     expiresIn: number;
   };
   assignedExams: AssignedExam[];
@@ -28,7 +29,11 @@ const examSlice = createSlice({
         currentQuestion: 0,
         tabChangeCount: 0,
         didLeaveExam: false,
-        answerKeys: Array(action.payload.questionCount).fill(null),
+        answerKeys: Array(action.payload.questionCount).fill({
+          questionId: "",
+          answer: "",
+        }),
+        score: 0,
         expiresIn: new Date().getSeconds() + action.payload.duration,
       };
 
@@ -71,15 +76,16 @@ const examSlice = createSlice({
 
     setAnswer: (
       state: ExamStore,
-      action: PayloadAction<{ questionNo: number; answerKey: string }>
+      action: PayloadAction<{ questionNo: number; answerKey: string, questionId: string }>
     ) => {
-      const { questionNo, answerKey } = action.payload;
+      const { questionNo, answerKey, questionId } = action.payload;
 
       if (questionNo < 0 || questionNo >= state.activeExam.exam.questionCount) {
         return;
       }
 
-      state.activeExam.answerKeys[questionNo] = answerKey;
+      state.activeExam.answerKeys[questionNo].answer = answerKey;
+      state.activeExam.answerKeys[questionNo].questionId = questionId;
     },
 
     setAssignedExams: (
@@ -95,6 +101,16 @@ const examSlice = createSlice({
 
     increaseTabChangeCount: (state: ExamStore) => {
       state.activeExam.tabChangeCount += 1;
+    },
+
+    increaseScore: (state: ExamStore, action: PayloadAction<number>) => {
+      const score = action.payload;
+      state.activeExam.score += score;
+    },
+
+    decreaseScore: (state: ExamStore, action: PayloadAction<number>) => {
+      const score = action.payload;
+      state.activeExam.score -= score;
     },
   },
 });

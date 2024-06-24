@@ -31,13 +31,13 @@ const DisableDevTools = () => {
             console.log('%c', devtools);
         };
 
-        detectDevTools();
-        const intervalId = setInterval(detectDevTools, 1000);
+        // detectDevTools();
+        // const intervalId = setInterval(detectDevTools, 1000);
 
         return () => {
             document.removeEventListener('contextmenu', disableDefault);
             document.removeEventListener('keydown', disableCopyAndOpenDevTools);
-            clearInterval(intervalId);
+            // clearInterval(intervalId);
         };
     }, []);
 

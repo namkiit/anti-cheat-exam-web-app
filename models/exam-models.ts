@@ -1,6 +1,8 @@
 export interface Question {
+  _id: string;
   title: string;
   answers: any;
+  correctAnswer: string;
 }
 
 export interface Exam {
@@ -21,4 +23,9 @@ export interface AssignedExam {
   endDate: string;
   duration: number;
   status: string;
+}
+
+export interface AnsweredQuestion { 
+  questionId: string;
+  answer: string;
 }

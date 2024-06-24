@@ -1,4 +1,5 @@
 import { BASE_URL } from "../../constants";
+import { AnsweredQuestion } from "../../models/exam-models";
 
 const getUser = async (id: string, password: string) => {
   try {
@@ -31,31 +32,32 @@ const getUser = async (id: string, password: string) => {
 const submitExam = async (
   studentId: string,
   examId: string,
-  answers: string[],
+  answers: AnsweredQuestion[],
+  score: number,
   token: string
 ) => {
-  console.log({ studentId, examId, answers })
-  try {
-    const res = await fetch(`${BASE_URL}/submitExam/${studentId}`, {
-      method: "POST",
-      body: JSON.stringify({ examId, answers }),
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+  console.log({ studentId, examId, answers, score })
+  // try {
+  //   const res = await fetch(`${BASE_URL}/submitExam/${studentId}`, {
+  //     method: "POST",
+  //     body: JSON.stringify({ examId, answers, score }),
+  //     headers: {
+  //       Accept: "application/json",
+  //       "Content-Type": "application/json",
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //   });
 
-    const data = await res.json();
+  //   const data = await res.json();
 
-    if (!res.ok || data.err) {
-      throw new Error(data.err || "Failed to submit exam!");
-    }
+  //   if (!res.ok || data.err) {
+  //     throw new Error(data.err || "Failed to submit exam!");
+  //   }
 
-    return data;
-  } catch (e) {
-    throw e;
-  }
+  //   return data;
+  // } catch (e) {
+  //   throw e;
+  // }
 };
 
 export { getUser, submitExam };

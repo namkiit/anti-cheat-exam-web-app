@@ -71,7 +71,7 @@ const QuestionTracker: React.FC<QuestionTrackerProps> = () => {
               questionNumber={i + 1}
               highlight={currentQuestion == i}
               onClick={() => onClick(i)}
-              isAnswered={activeExam.answerKeys[i] !== null}
+              isAnswered={activeExam.answerKeys[i].answer !== ""}
             />
           ))}
         </Grid>

@@ -30,14 +30,21 @@ const QuestionWidget: React.FC<QuestionWidgetProp> = () => {
   } = activeExam;
 
   const question = questions[currentQuestion];
+  console.log(question)
 
   const onAnswerChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     val: string
   ) => {
     dispatch(
-      examActions.setAnswer({ questionNo: currentQuestion, answerKey: val })
+      examActions.setAnswer({ questionNo: currentQuestion, answerKey: val, questionId: question._id })
     );
+
+    if (val === question.correctAnswer) {
+      dispatch(
+        examActions.increaseScore(10 / questions.length)
+      );
+    }
   };
 
   return (
@@ -54,7 +61,7 @@ const QuestionWidget: React.FC<QuestionWidgetProp> = () => {
       <div className={classes.optionsGroup}>
         <FormControl>
           <RadioGroup
-            value={answerKeys[currentQuestion]}
+            value={answerKeys[currentQuestion].answer}
             onChange={onAnswerChange}
           >
             {question.answers.map(({ text, label }) => {

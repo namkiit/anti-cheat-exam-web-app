@@ -28,22 +28,29 @@ const AppBarExam: React.FC<AppBarExamProps> = ({ examName, loadingBarRef }) => {
   const onEndExam = async () => {
     setIsLoading(true);
     loadingBarRef.current.continuousStart(50);
-    try {
-      const result = await submitExam(
-        session.data?.user.id,
-        activeExam.exam._id,
-        activeExam.answerKeys,
-        session.data?.user.token
-      );
 
-      router.replace("/dashboard");
-    } catch (e) {
-      console.log(e);
-      toast(e.message || "Failed to submit exam, please try again!");
-    } finally {
-      setIsLoading(false);
-      loadingBarRef.current.continuousStart(50);
-    }
+    console.log(session.data?.user.id,
+          activeExam.exam._id,
+          activeExam.answerKeys,
+          activeExam.score,
+          session.data?.user.token)
+
+    // try {
+    //   const result = await submitExam(
+    //     session.data?.user.id,
+    //     activeExam.exam._id,
+    //     activeExam.answerKeys,
+    //     session.data?.user.token
+    //   );
+
+    //   router.replace("/dashboard");
+    // } catch (e) {
+    //   console.log(e);
+    //   toast(e.message || "Failed to submit exam, please try again!");
+    // } finally {
+    //   setIsLoading(false);
+    //   loadingBarRef.current.continuousStart(50);
+    // }
   };
 
   return (
