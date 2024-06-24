@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   env: {
-    BACKEND_URL: process.env.BACKEND_URL,
+    BACKEND_URL: process.env.NEXT_PUBLIC_BACKEND_URL,
   },
 };
 
