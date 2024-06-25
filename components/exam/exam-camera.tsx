@@ -166,7 +166,7 @@ const ExamCamera: React.FC<ExamCameraProps> = ({ handleCheatingLimit }) => {
 
   return (
     <div className={classes.cameraContainer}>
-      <p className={classes.cheatingStatus}>Trạng thái gian lận: {chetingStatus}</p>
+      <p className={classes.cheatingStatus}>Trạng thái khuôn mặt: {chetingStatus}</p>
 
       {true && (
         <Webcam
@@ -177,9 +177,6 @@ const ExamCamera: React.FC<ExamCameraProps> = ({ handleCheatingLimit }) => {
       )}
 
       <br />
-
-      {/* <Button onClick={onResultClick}>Get Result</Button> */}
-
       {img_ && <NextImage src={img_} alt="Profile" />}
     </div>
   );

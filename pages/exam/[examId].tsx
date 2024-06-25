@@ -23,8 +23,7 @@ import LoadingBar, { LoadingBarRef } from "react-top-loading-bar";
 import { submitExam } from "../../helpers/api/user-api";
 import { FLAGGED_ACTIONS_SCORE } from "../../constants";
 import ExamRule from "../../components/exam/exam-rules";
-
-const TESTING = false;
+import DisableDevTools from "../../components/non-render/disable-devtools";
 
 // TODO (CHEAT DETECTION):
 //
@@ -72,9 +71,37 @@ const ExamPage: React.FC<ExamPageProps> = ({ exam, error }) => {
 
   const session = useSession();
 
+  const enterFullscreen = () => {
+    const elem = document.documentElement;
+
+    if (elem.requestFullscreen) {
+      elem.requestFullscreen();
+    }
+  };
+
   const startExam = () => {
+    enterFullscreen();
     setIsExamStarted(true);
   };
+
+  // Enable fullscreen mode on mount
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      if (!document.fullscreenElement) {
+        dispatch(examActions.decreaseCredibilityScore(FLAGGED_ACTIONS_SCORE.WINDOW_FOCUS_CHANGE));
+        showModal(
+          "CẢNH BÁO !",
+          "Thoát khỏi chế độ toàn màn hình sẽ bị tính là vi phạm quy chế thi ! Vui lòng bật F11 hoặc tắt pop-up này để bật chế độ toàn màn hình"
+        );
+      }
+    };
+
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+    };
+  }, [dispatch]);
 
   // Load exam into state
   useEffect(() => {
@@ -153,7 +180,7 @@ const ExamPage: React.FC<ExamPageProps> = ({ exam, error }) => {
   };
 
   const hideModel = () => {
-    if (!didLeaveExam) {
+    if (!didLeaveExam && document.fullscreenElement) {
       return;
     }
 
@@ -163,7 +190,7 @@ const ExamPage: React.FC<ExamPageProps> = ({ exam, error }) => {
       description: "",
     });
 
-    // enterFullscreen()
+    enterFullscreen()
   };
 
   const endExam = async () => {
@@ -260,15 +287,14 @@ const ExamPage: React.FC<ExamPageProps> = ({ exam, error }) => {
         </>
       ) : <ExamRule onStartExam={startExam} />}
 
-      {/* Disabled for testing */}
-      {!TESTING && (
-        <WarningModal
-          open={isModalVisible}
-          title={modalData?.title}
-          description={modalData?.description}
-          onClose={hideModel}
-        />
-      )}
+      <WarningModal
+        open={isModalVisible}
+        title={modalData?.title}
+        description={modalData?.description}
+        onClose={hideModel}
+      />
+
+      <DisableDevTools />
     </React.Fragment>
   );
 };

@@ -6,7 +6,6 @@ import Features from "../components/home/features";
 import Footer from "../components/home/footer";
 import Hero from "../components/home/hero";
 import NavBarHome from "../components/home/navbar-home";
-import DisableDevTools from "../components/non-render/disable-devtools";
 
 interface HomePageProps {}
 
@@ -22,7 +21,6 @@ const HomePage: React.FC<HomePageProps> = ({}) => {
       <Features />
       <Contact />
       {/* <Footer /> */}
-      <DisableDevTools />
     </>
   );
 };

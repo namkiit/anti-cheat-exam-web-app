@@ -80,8 +80,8 @@ export const getCheatingStatus = (
   lookingLeft: boolean,
   lookingRight: boolean
 ): string => {
-  if (lookingLeft) return "Phát hiện gian lận: Bạn đang nhìn sang trái";
-  else if (lookingRight) return "Phát hiện gian lận: Bạn đang nhìn sang phải";
+  if (lookingLeft) return "Phát hiện hành vi bất thường: Bạn đang nhìn sang trái";
+  else if (lookingRight) return "Phát hiện hành vi bất thường: Bạn đang nhìn sang phải";
   else return "Không phát hiện bất thường";
 };
 
