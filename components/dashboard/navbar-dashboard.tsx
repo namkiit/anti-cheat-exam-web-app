@@ -116,6 +116,12 @@ const NavBarDashboard: React.FC<NavBarDashboardProps> = (props) => {
               </Link>
             )}
 
+            {session.status === "authenticated" && (
+              <Link href="/result">
+                <Button sx={{ color: "#fff" }}>Kết quả</Button>
+              </Link>
+            )}
+
             {session.status === "unauthenticated" && (
               <Link href="/auth/login">
                 <Button sx={{ color: "#fff" }}>Đăng nhập</Button>

@@ -34,30 +34,30 @@ const submitExam = async (
   examId: string,
   answers: AnsweredQuestion[],
   score: number,
+  credibilityScore: number,
   token: string
 ) => {
-  console.log({ studentId, examId, answers, score })
-  // try {
-  //   const res = await fetch(`${BASE_URL}/submitExam/${studentId}`, {
-  //     method: "POST",
-  //     body: JSON.stringify({ examId, answers, score }),
-  //     headers: {
-  //       Accept: "application/json",
-  //       "Content-Type": "application/json",
-  //       Authorization: `Bearer ${token}`,
-  //     },
-  //   });
+  try {
+    const res = await fetch(`${BASE_URL}/submitExam/${studentId}`, {
+      method: "POST",
+      body: JSON.stringify({ examId, answers, score, credibilityScore }),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-  //   const data = await res.json();
+    const data = await res.json();
 
-  //   if (!res.ok || data.err) {
-  //     throw new Error(data.err || "Failed to submit exam!");
-  //   }
+    if (!res.ok || data.err) {
+      throw new Error(data.err || "Failed to submit exam!");
+    }
 
-  //   return data;
-  // } catch (e) {
-  //   throw e;
-  // }
+    return data;
+  } catch (e) {
+    throw e;
+  }
 };
 
 export { getUser, submitExam };

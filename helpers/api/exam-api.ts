@@ -42,4 +42,25 @@ const getAssignedExams = async (userId: string, token: string) => {
   }
 };
 
-export { getExam, getAssignedExams };
+const getSubmittedExams = async (userId: string, token: string) => {
+  // TODO: handle res.json() error when response not in json
+  try {
+    const res = await fetch(`${BASE_URL}/${userId}/submittedExams/all`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const data = await res.json();
+
+    if (!res.ok || data.err) {
+      throw new Error(data.err || "Failed to get submitted exams from server!");
+    }
+
+    return data.exams;
+  } catch (e) {
+    throw e;
+  }
+};
+
+export { getExam, getAssignedExams, getSubmittedExams };

@@ -30,21 +30,21 @@ const QuestionWidget: React.FC<QuestionWidgetProp> = () => {
   } = activeExam;
 
   const question = questions[currentQuestion];
-  console.log(question)
 
   const onAnswerChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     val: string
   ) => {
-    dispatch(
-      examActions.setAnswer({ questionNo: currentQuestion, answerKey: val, questionId: question._id })
-    );
+    const isCorrect = val === question.correctAnswer;
 
-    if (val === question.correctAnswer) {
-      dispatch(
-        examActions.increaseScore(10 / questions.length)
-      );
-    }
+    dispatch(
+      examActions.setAnswer({
+        questionNo: currentQuestion,
+        answerKey: val,
+        questionId: question._id,
+        isCorrect,
+      })
+    );
   };
 
   return (
@@ -73,8 +73,7 @@ const QuestionWidget: React.FC<QuestionWidgetProp> = () => {
                   label={text}
                 />
               );
-            })
-            }
+            })}
           </RadioGroup>
         </FormControl>
       </div>

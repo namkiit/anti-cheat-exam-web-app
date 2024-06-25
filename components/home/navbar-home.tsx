@@ -177,6 +177,13 @@ const NavBarHome: React.FC<NavBarHomeProps> = (props) => {
                   />
                 )}
 
+                {session.status === "authenticated" && (
+                  <NavButton
+                    text="Kết quả"
+                    onClick={() => gotoPage("/result")}
+                  />
+                )}
+
                 {session.status === "unauthenticated" && (
                   <NavButton
                     text="Đăng nhập"

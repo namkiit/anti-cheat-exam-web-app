@@ -13,6 +13,9 @@ import {
   printLandmarks,
 } from "../../helpers/face-detection/face-detection-helper";
 import classes from "./exam-camera.module.scss";
+import { useAppDispatch, useAppSelector } from "../../hooks";
+import { FLAGGED_ACTIONS_SCORE } from "../../constants";
+import { examActions } from "../../store/exam-store";
 
 interface ExamCameraProps { 
   handleCheatingLimit: Function;
@@ -23,6 +26,8 @@ const ExamCamera: React.FC<ExamCameraProps> = ({ handleCheatingLimit }) => {
   const webcamRef: React.LegacyRef<Webcam> = useRef();
   const faceDetectionRef = useRef<FaceDetection>(null);
   const realtimeDetection = true;
+
+  const dispatch = useAppDispatch();
 
   const frameRefresh = 30;
   let currentFrame = useRef(0);
@@ -43,11 +48,12 @@ const ExamCamera: React.FC<ExamCameraProps> = ({ handleCheatingLimit }) => {
       intervalId = setInterval(() => {
         setCount((prevCount) => prevCount + 1);
 
-        // Check if the count reaches 10 and call endExam() if true
-        if (count === 10) {
-          toast("Bạn đã thực hiện hành vi quay sang ngang hơn 10s, hệ thống giờ sẽ nộp bài kiểm tra !");
-          handleCheatingLimit();
-          clearInterval(intervalId); // Stop the interval when count reaches 10
+        // Check if the count reaches 15 and decrease credibility score if true
+        if (count === 15) {
+          toast("Bạn đã không nhìn vào camera hơn 15s, hệ thống giờ sẽ trừ điểm tin cậy !");
+          dispatch(examActions.decreaseCredibilityScore(FLAGGED_ACTIONS_SCORE.NOT_LOOKING_IN_CAMERA));
+          // handleCheatingLimit();
+          clearInterval(intervalId);
         }
       }, 1000);
     }

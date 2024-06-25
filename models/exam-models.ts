@@ -25,7 +25,19 @@ export interface AssignedExam {
   status: string;
 }
 
+export interface SubmittedExam {
+  examId: string;
+  questionCount: number;
+  title: string;
+  startDate: string;
+  endDate: string;
+  duration: number;
+  score: number;
+  credibilityScore: number;
+}
+
 export interface AnsweredQuestion { 
   questionId: string;
   answer: string;
+  isCorrect: boolean;
 }

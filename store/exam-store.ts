@@ -1,22 +1,24 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AnsweredQuestion, AssignedExam, Exam } from "../models/exam-models";
+import { AnsweredQuestion, AssignedExam, SubmittedExam, Exam } from "../models/exam-models";
 
 export interface ExamStore {
   activeExam: {
     exam: Exam;
     currentQuestion: number;
-    tabChangeCount: number;
+    credibilityScore: number;
     didLeaveExam?: boolean;
     answerKeys: AnsweredQuestion[];
     score: number;
     expiresIn: number;
   };
   assignedExams: AssignedExam[];
+  submittedExams: SubmittedExam[];
 }
 
 const initialState: ExamStore = {
   activeExam: null,
   assignedExams: [],
+  submittedExams: [],
 };
 
 const examSlice = createSlice({
@@ -27,11 +29,12 @@ const examSlice = createSlice({
       const activeExam: ExamStore["activeExam"] = {
         exam: action.payload,
         currentQuestion: 0,
-        tabChangeCount: 0,
+        credibilityScore: 100,
         didLeaveExam: false,
         answerKeys: Array(action.payload.questionCount).fill({
           questionId: "",
           answer: "",
+          isCorrect: false,
         }),
         score: 0,
         expiresIn: new Date().getSeconds() + action.payload.duration,
@@ -45,6 +48,7 @@ const examSlice = createSlice({
     },
 
     goToQuestion: (state: ExamStore, action: PayloadAction<number>) => {
+      if (!state.activeExam) return;
       const questionNo = action.payload;
 
       if (questionNo < 0 || questionNo >= state.activeExam.exam.questionCount) {
@@ -55,6 +59,7 @@ const examSlice = createSlice({
     },
 
     nextQuestion: (state: ExamStore) => {
+      if (!state.activeExam) return;
       const { exam, currentQuestion } = state.activeExam;
 
       if (currentQuestion + 1 === exam.questionCount) {
@@ -65,6 +70,7 @@ const examSlice = createSlice({
     },
 
     prevQuestion: (state: ExamStore) => {
+      if (!state.activeExam) return;
       const { exam, currentQuestion } = state.activeExam;
 
       if (currentQuestion - 1 < 0) {
@@ -76,9 +82,10 @@ const examSlice = createSlice({
 
     setAnswer: (
       state: ExamStore,
-      action: PayloadAction<{ questionNo: number; answerKey: string, questionId: string }>
+      action: PayloadAction<{ questionNo: number; answerKey: string; questionId: string; isCorrect: boolean }>
     ) => {
-      const { questionNo, answerKey, questionId } = action.payload;
+      if (!state.activeExam) return;
+      const { questionNo, answerKey, questionId, isCorrect } = action.payload;
 
       if (questionNo < 0 || questionNo >= state.activeExam.exam.questionCount) {
         return;
@@ -86,6 +93,13 @@ const examSlice = createSlice({
 
       state.activeExam.answerKeys[questionNo].answer = answerKey;
       state.activeExam.answerKeys[questionNo].questionId = questionId;
+      state.activeExam.answerKeys[questionNo].isCorrect = isCorrect;
+
+      // Recalculate score
+      const correctAnswers = state.activeExam.answerKeys.filter(
+        (answer) => answer.isCorrect
+      ).length;
+      state.activeExam.score = (10 / state.activeExam.exam.questionCount) * correctAnswers;
     },
 
     setAssignedExams: (
@@ -99,18 +113,17 @@ const examSlice = createSlice({
       state.assignedExams = [];
     },
 
-    increaseTabChangeCount: (state: ExamStore) => {
-      state.activeExam.tabChangeCount += 1;
+    setSubmittedExams: (
+      state: ExamStore,
+      action: PayloadAction<SubmittedExam[]>
+    ) => {
+      state.submittedExams = action.payload;
     },
 
-    increaseScore: (state: ExamStore, action: PayloadAction<number>) => {
-      const score = action.payload;
-      state.activeExam.score += score;
-    },
-
-    decreaseScore: (state: ExamStore, action: PayloadAction<number>) => {
-      const score = action.payload;
-      state.activeExam.score -= score;
+    decreaseCredibilityScore: (state: ExamStore, action: PayloadAction<number>) => {
+      if (!state.activeExam) return;
+      const newScore = state.activeExam.credibilityScore - action.payload;
+      state.activeExam.credibilityScore = newScore < 0 ? 0 : newScore;
     },
   },
 });

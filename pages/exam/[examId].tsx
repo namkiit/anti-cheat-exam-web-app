@@ -21,6 +21,8 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import LoadingBar, { LoadingBarRef } from "react-top-loading-bar";
 import { submitExam } from "../../helpers/api/user-api";
+import { FLAGGED_ACTIONS_SCORE } from "../../constants";
+import ExamRule from "../../components/exam/exam-rules";
 
 const TESTING = false;
 
@@ -59,15 +61,20 @@ const ExamPage: React.FC<ExamPageProps> = ({ exam, error }) => {
   const activeExam = useAppSelector((state) => state.exam.activeExam);
 
   const [didLeaveExam, setDidLeaveExam] = useState(false);
-
+  const [isExamStarted, setIsExamStarted] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
   const [modalData, setModalData] = useState<{
     title: string;
     description: string;
   }>();
 
   const session = useSession();
-  const [isLoading, setIsLoading] = useState(false);
+
+  const startExam = () => {
+    setIsExamStarted(true);
+  };
 
   // Load exam into state
   useEffect(() => {
@@ -118,6 +125,8 @@ const ExamPage: React.FC<ExamPageProps> = ({ exam, error }) => {
           "CẢNH BÁO !",
           "Rời khỏi bài thi nhiều lần sẽ bị tính là vi phạm quy chế thi !"
         );
+
+        dispatch(examActions.decreaseCredibilityScore(FLAGGED_ACTIONS_SCORE.WINDOW_FOCUS_CHANGE));
       }
     };
 
@@ -154,37 +163,31 @@ const ExamPage: React.FC<ExamPageProps> = ({ exam, error }) => {
       description: "",
     });
 
-    dispatch(examActions.increaseTabChangeCount());
-
-    if (activeExam.tabChangeCount >= 3) {
-      toast("Bạn đã chuyển tab hơn 3 lần, hệ thống giờ sẽ nộp bài kiểm tra !");
-      // endExam()
-    }
+    // enterFullscreen()
   };
 
   const endExam = async () => {
-    // setIsLoading(true);
-    // loadingBarRef.current.continuousStart(50);
-    console.log(session.data?.user.id)
+    setIsLoading(true);
+    loadingBarRef.current.continuousStart(50);
 
-    console.log(activeExam)
+    try {
+      const result = await submitExam(
+        session.data?.user.id,
+        activeExam.exam._id,
+        activeExam.answerKeys,
+        activeExam.score,
+        activeExam.credibilityScore,
+        session.data?.user.token
+      );
 
-    // try {
-    //   const result = await submitExam(
-    //     session.data?.user.id,
-    //     activeExam.exam._id,
-    //     activeExam.answerKeys,
-    //     session.data?.user.token
-    //   );
-
-    //   router.replace("/dashboard");
-    // } catch (e) {
-    //   console.log(e);
-    //   toast(e.message || "Không nộp được bài kiểm tra, vui lòng thử lại !");
-    // } finally {
-    //   setIsLoading(false);
-    //   loadingBarRef.current.continuousStart(50);
-    // }
+      router.replace("/dashboard");
+    } catch (e) {
+      console.log(e);
+      toast(e.message || "Không nộp được bài kiểm tra, vui lòng thử lại !");
+    } finally {
+      setIsLoading(false);
+      loadingBarRef.current.continuousStart(50);
+    }
   };
 
   if (error) {
@@ -207,51 +210,55 @@ const ExamPage: React.FC<ExamPageProps> = ({ exam, error }) => {
 
       <LoadingBar color="#ffffff" ref={loadingBarRef} />
 
-      <AppBarExam
-        examName={activeExam.exam.name}
-        loadingBarRef={loadingBarRef}
-      />
+      {isExamStarted ? (
+        <>
+          <AppBarExam
+            examName={activeExam.exam.name}
+            loadingBarRef={loadingBarRef}
+          />
 
-      <Grid
-        container
-        direction="row"
-        sx={{
-          height: "calc(100% - 4rem)",
-        }}
-      >
-        <Grid item xs={9}>
           <Grid
             container
-            direction="column"
-            height="100%"
-            justifyContent="space-between"
+            direction="row"
+            sx={{
+              height: "calc(100% - 4rem)",
+            }}
           >
-            <Grid item>
-              <QuestionWidget />
+            <Grid item xs={9}>
+              <Grid
+                container
+                direction="column"
+                height="100%"
+                justifyContent="space-between"
+              >
+                <Grid item>
+                  <QuestionWidget />
+                </Grid>
+                <Grid item>
+                  <ExamButtonsGroup />
+                  <p>Điểm tín nhiệm: {activeExam.credibilityScore}</p>
+                </Grid>
+              </Grid>
             </Grid>
-            <Grid item>
-              <ExamButtonsGroup />
-              <p>Số lần chuyển tab: {activeExam.tabChangeCount}</p>
-            </Grid>
-          </Grid>
-        </Grid>
 
-        <Grid item xs={3}>
-          <Grid
-            container
-            direction="column"
-            height="100%"
-            justifyContent="space-between"
-          >
-            <Grid item>
-              <QuestionTracker />
-            </Grid>
-            <Grid item>
-              <ExamCamera handleCheatingLimit={endExam}/>
+            <Grid item xs={3}>
+              <Grid
+                container
+                direction="column"
+                height="100%"
+                justifyContent="space-between"
+              >
+                <Grid item>
+                  <QuestionTracker />
+                </Grid>
+                <Grid item>
+                  <ExamCamera handleCheatingLimit={endExam} />
+                </Grid>
+              </Grid>
             </Grid>
           </Grid>
-        </Grid>
-      </Grid>
+        </>
+      ) : <ExamRule onStartExam={startExam} />}
 
       {/* Disabled for testing */}
       {!TESTING && (
@@ -287,8 +294,6 @@ const getServerSideProps: GetServerSideProps = async (context) => {
       examId.toString(),
       session.user.token
     );
-
-    console.log(exam)
 
     if (!exam) {
       throw new Error("Không lấy được bài kiểm tra !");
