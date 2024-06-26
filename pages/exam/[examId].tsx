@@ -88,7 +88,7 @@ const ExamPage: React.FC<ExamPageProps> = ({ exam, error }) => {
   useEffect(() => {
     const handleFullscreenChange = () => {
       if (!document.fullscreenElement) {
-        dispatch(examActions.decreaseCredibilityScore(FLAGGED_ACTIONS_SCORE.WINDOW_FOCUS_CHANGE));
+        dispatch(examActions.decreaseCredibilityScore(FLAGGED_ACTIONS_SCORE.EXIT_FULLSCREEN));
         showModal(
           "CẢNH BÁO !",
           "Thoát khỏi chế độ toàn màn hình sẽ bị tính là vi phạm quy chế thi ! Vui lòng bật F11 hoặc tắt pop-up này để bật chế độ toàn màn hình"

@@ -1,12 +1,9 @@
 import { Camera } from "@mediapipe/camera_utils";
 import { FaceDetection, Results } from "@mediapipe/face_detection";
-import { Button } from "@mui/material";
-import NextImage from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import Webcam from "react-webcam";
 import {
-  b64toBlob,
   detectCheating,
   extractFaceCoordinates,
   getCheatingStatus,
@@ -24,6 +21,7 @@ interface ExamCameraProps {
 const ExamCamera: React.FC<ExamCameraProps> = ({ handleCheatingLimit }) => {
   const [img_, setImg_] = useState<string>();
   const webcamRef: React.LegacyRef<Webcam> = useRef();
+  const cameraRef = useRef<Camera | null>(null);
   const faceDetectionRef = useRef<FaceDetection>(null);
   const realtimeDetection = true;
 
@@ -33,8 +31,6 @@ const ExamCamera: React.FC<ExamCameraProps> = ({ handleCheatingLimit }) => {
   let currentFrame = useRef(0);
 
   const [chetingStatus, setChetingStatus] = useState("");
-  // const [isWarningToastOn, setIsWarningToastOn] = useState(false);
-
   const [count, setCount] = useState(0);
 
   useEffect(() => {
@@ -58,7 +54,6 @@ const ExamCamera: React.FC<ExamCameraProps> = ({ handleCheatingLimit }) => {
       }, 1000);
     }
 
-    // Clean up the interval when the component unmounts or when chetingStatus changes
     return () => clearInterval(intervalId);
   }, [chetingStatus, count]);
 
@@ -80,25 +75,23 @@ const ExamCamera: React.FC<ExamCameraProps> = ({ handleCheatingLimit }) => {
       const existingToast = toast.isActive('faceDetectionToast');
 
       if (result.detections.length < 1) {
-        // Display toast if not already displayed
         if (!existingToast) {
           toast.info(
             "Không tìm thấy khuôn mặt, hãy đảm bảo rằng mặt của bạn ở trong vùng camera và không bị che lấp !",
             {
-              toastId: 'faceDetectionToast', // Set a unique toastId
-              autoClose: false, // Disable autoClose
+              toastId: 'faceDetectionToast',
+              autoClose: false,
             }
           );
         }
         return;
       } else if (result.detections.length > 1) {
-        // Display toast if not already displayed
         if (!existingToast) {
           toast.warn(
             "Phát hiện nhiều người trong khung hình, bạn có thể bị đánh dấu bài !",
             {
-              toastId: 'faceDetectionToast', // Set a unique toastId
-              autoClose: false, // Disable autoClose
+              toastId: 'faceDetectionToast',
+              autoClose: false,
             }
           );
         }
@@ -146,23 +139,14 @@ const ExamCamera: React.FC<ExamCameraProps> = ({ handleCheatingLimit }) => {
       });
 
       camera.start();
+      cameraRef.current = camera;
     }
 
     return () => {
       faceDetection.close();
+      cameraRef.current?.stop();
     };
   }, [webcamRef, realtimeDetection]);
-
-  const onResultClick = async () => {
-    // const imgSrc = webcamRef.current.getScreenshot();
-    // const blob = await b64toBlob(imgSrc);
-    // const img = new Image(600, 400);
-    // const src = URL.createObjectURL(blob);
-    // img.src = src;
-    // setImg_(src);
-
-    await faceDetectionRef?.current?.send({ image: webcamRef.current.video });
-  };
 
   return (
     <div className={classes.cameraContainer}>
@@ -177,7 +161,6 @@ const ExamCamera: React.FC<ExamCameraProps> = ({ handleCheatingLimit }) => {
       )}
 
       <br />
-      {img_ && <NextImage src={img_} alt="Profile" />}
     </div>
   );
 };
