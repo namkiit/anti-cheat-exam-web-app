@@ -8,6 +8,7 @@ import { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
 import Head from "next/head";
 import { createTheme, ThemeProvider } from "@mui/material";
+import DisableDevTools from "../components/non-render/disable-devtools";
 
 const theme = createTheme({
   typography: {
@@ -26,6 +27,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           </Head>
           <Component {...pageProps} />
           <ToastContainer position="bottom-center" theme="light" />
+          <DisableDevTools />
         </ThemeProvider>
       </Provider>
     </SessionProvider>

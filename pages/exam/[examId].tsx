@@ -23,7 +23,6 @@ import LoadingBar, { LoadingBarRef } from "react-top-loading-bar";
 import { submitExam } from "../../helpers/api/user-api";
 import { FLAGGED_ACTIONS_SCORE } from "../../constants";
 import ExamRule from "../../components/exam/exam-rules";
-import DisableDevTools from "../../components/non-render/disable-devtools";
 
 // TODO (CHEAT DETECTION):
 //
@@ -293,8 +292,6 @@ const ExamPage: React.FC<ExamPageProps> = ({ exam, error }) => {
         description={modalData?.description}
         onClose={hideModel}
       />
-
-      <DisableDevTools />
     </React.Fragment>
   );
 };
