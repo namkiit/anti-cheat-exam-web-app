@@ -14,7 +14,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks";
 import { FLAGGED_ACTIONS_SCORE } from "../../constants";
 import { examActions } from "../../store/exam-store";
 
-interface ExamCameraProps { 
+interface ExamCameraProps {
   handleCheatingLimit: Function;
 }
 
@@ -32,6 +32,8 @@ const ExamCamera: React.FC<ExamCameraProps> = ({ handleCheatingLimit }) => {
 
   const [chetingStatus, setChetingStatus] = useState("");
   const [count, setCount] = useState(0);
+  const [faceNotDetectedCount, setFaceNotDetectedCount] = useState(0);
+  const [multipleFacesCount, setMultipleFacesCount] = useState(0);
 
   useEffect(() => {
     let intervalId: any;
@@ -57,7 +59,6 @@ const ExamCamera: React.FC<ExamCameraProps> = ({ handleCheatingLimit }) => {
     return () => clearInterval(intervalId);
   }, [chetingStatus, count]);
 
-
   useEffect(() => {
     const faceDetection: FaceDetection = new FaceDetection({
       locateFile: (file) => {
@@ -72,25 +73,43 @@ const ExamCamera: React.FC<ExamCameraProps> = ({ handleCheatingLimit }) => {
 
     function onResult(result: Results) {
       // Check if the toast is already displayed
-      const existingToast = toast.isActive('faceDetectionToast');
+      const existingToast = toast.isActive("faceDetectionToast");
 
       if (result.detections.length < 1) {
+        setFaceNotDetectedCount((prev) => prev + 1);
+        setMultipleFacesCount(0);
+
+        if (faceNotDetectedCount === 15) {
+          toast("Không tìm thấy khuôn mặt trong 15s, hệ thống sẽ trừ điểm tin cậy !");
+          dispatch(examActions.decreaseCredibilityScore(FLAGGED_ACTIONS_SCORE.FACE_NOT_DETECTED));
+          setFaceNotDetectedCount(0); // Reset counter
+        }
+
         if (!existingToast) {
           toast.info(
             "Không tìm thấy khuôn mặt, hãy đảm bảo rằng mặt của bạn ở trong vùng camera và không bị che lấp !",
             {
-              toastId: 'faceDetectionToast',
+              toastId: "faceDetectionToast",
               autoClose: false,
             }
           );
         }
         return;
       } else if (result.detections.length > 1) {
+        setMultipleFacesCount((prev) => prev + 1);
+        setFaceNotDetectedCount(0);
+
+        if (multipleFacesCount === 15) {
+          toast("Phát hiện nhiều người trong khung hình trong 15s, hệ thống sẽ trừ điểm tin cậy !");
+          dispatch(examActions.decreaseCredibilityScore(FLAGGED_ACTIONS_SCORE.MULTIPLE_FACES_IN_CAMERA));
+          setMultipleFacesCount(0); // Reset counter
+        }
+
         if (!existingToast) {
           toast.warn(
             "Phát hiện nhiều người trong khung hình, bạn có thể bị đánh dấu bài !",
             {
-              toastId: 'faceDetectionToast',
+              toastId: "faceDetectionToast",
               autoClose: false,
             }
           );
@@ -99,8 +118,10 @@ const ExamCamera: React.FC<ExamCameraProps> = ({ handleCheatingLimit }) => {
       } else if (result.detections.length === 1) {
         // Hide the toast if it's displayed
         if (existingToast) {
-          toast.dismiss('faceDetectionToast');
+          toast.dismiss("faceDetectionToast");
         }
+        setFaceNotDetectedCount(0);
+        setMultipleFacesCount(0);
       }
 
       const faceCoordinates = extractFaceCoordinates(result);
@@ -146,7 +167,7 @@ const ExamCamera: React.FC<ExamCameraProps> = ({ handleCheatingLimit }) => {
       faceDetection.close();
       cameraRef.current?.stop();
     };
-  }, [webcamRef, realtimeDetection]);
+  }, [webcamRef, realtimeDetection, faceNotDetectedCount, multipleFacesCount]);
 
   return (
     <div className={classes.cameraContainer}>
