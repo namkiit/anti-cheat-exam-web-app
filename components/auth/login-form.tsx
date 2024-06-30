@@ -134,7 +134,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ loadingBarRef }) => {
             </Avatar>
 
             <Typography component="h1" variant="h5" sx={{ mb: 5 }}>
-              Anti-Cheat Exam App
+              Auto-Proctoring Exam App
             </Typography>
 
             <Box

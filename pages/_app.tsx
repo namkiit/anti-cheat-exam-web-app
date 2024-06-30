@@ -22,7 +22,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Provider store={store}>
         <ThemeProvider theme={theme}>
           <Head>
-            <title>Anti-Cheat Exam App</title>
+            <title>Auto-Proctoring Exam App</title>
             <meta name="author" content="Nguyen Nam Kiet" />
           </Head>
           <Component {...pageProps} />

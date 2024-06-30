@@ -106,7 +106,7 @@ const NavBarHome: React.FC<NavBarHomeProps> = (props) => {
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
       <Typography variant="h6" sx={{ my: 2 }}>
-        Anti-Cheat Exam App
+        Auto-Proctoring Exam App
       </Typography>
       <Divider />
       <List>
@@ -162,7 +162,7 @@ const NavBarHome: React.FC<NavBarHomeProps> = (props) => {
                 component="div"
                 sx={{ flexGrow: 1, ml: 2 }}
               >
-                Anti-Cheat Exam App
+                Auto-Proctoring Exam App
               </Typography>
 
               <Box sx={{ display: { xs: "none", sm: "block" } }}>

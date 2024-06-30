@@ -34,7 +34,7 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ exams, error }) => {
   return (
     <div>
       <Head>
-        <title>Anti-Cheat Exam App Dashboard</title>
+        <title>Auto-Proctoring Exam App Dashboard</title>
       </Head>
       <LoadingBar color="#ffffff" ref={loadingBarRef} />
       <NavBarDashboard loadingBarRef={loadingBarRef} />

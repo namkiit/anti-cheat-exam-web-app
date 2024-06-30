@@ -11,7 +11,7 @@ const LoginPage = () => {
   return (
     <div>
       <Head>
-        <title>Anti-Cheat Exam App Login</title>
+        <title>Auto-Proctoring Exam App Login</title>
       </Head>
 
       <LoadingBar color="#1665C0" ref={loadingBarRef} />
