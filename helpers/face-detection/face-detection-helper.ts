@@ -55,12 +55,12 @@ export const detectCheating = (
 ) => {
   const { leftEar, leftEye, rightEar, rightEye } = faceCoordinates;
 
-  const leftCoordDistance = leftEye - leftEar;
-  const rightCoordDistance = rightEar - rightEye;
-
   // Old Approach: ears and eyes crossing
   // const lookingLeft = leftEye.x <= leftEar.x;
   // const lookingRight = RightEye.x >= rightEar.x;
+  
+  const leftCoordDistance = leftEye - leftEar;
+  const rightCoordDistance = rightEar - rightEye;
 
   // The higher the distance, the difficult it is to cheat
   const lookingLeft = leftCoordDistance <= 0.03;

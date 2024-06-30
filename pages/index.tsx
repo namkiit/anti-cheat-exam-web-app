@@ -3,7 +3,6 @@ import { useRef } from "react";
 import LoadingBar, { LoadingBarRef } from "react-top-loading-bar";
 import Contact from "../components/home/contact";
 import Features from "../components/home/features";
-import Footer from "../components/home/footer";
 import Hero from "../components/home/hero";
 import NavBarHome from "../components/home/navbar-home";
 
@@ -20,7 +19,6 @@ const HomePage: React.FC<HomePageProps> = ({}) => {
       <Hero loadingBarRef={loadingBarRef} />
       <Features />
       <Contact />
-      {/* <Footer /> */}
     </>
   );
 };
