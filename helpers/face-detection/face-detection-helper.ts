@@ -58,7 +58,7 @@ export const detectCheating = (
   const leftCoordDistance = leftEye - leftEar;
   const rightCoordDistance = rightEar - rightEye;
 
-  // Old Approcah: ears and eyes crossing
+  // Old Approach: ears and eyes crossing
   // const lookingLeft = leftEye.x <= leftEar.x;
   // const lookingRight = RightEye.x >= rightEar.x;
 
