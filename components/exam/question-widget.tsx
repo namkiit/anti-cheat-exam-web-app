@@ -64,7 +64,7 @@ const QuestionWidget: React.FC<QuestionWidgetProp> = () => {
             value={answerKeys[currentQuestion].answer}
             onChange={onAnswerChange}
           >
-            {question.answers.map(({ text, label }) => {
+            {shuffleArray(question.answers).map(({ text, label }) => {
               return (
                 <FormControlLabel
                   key={label}
@@ -82,3 +82,10 @@ const QuestionWidget: React.FC<QuestionWidgetProp> = () => {
 };
 
 export default QuestionWidget;
+
+function shuffleArray(array) {
+  return array
+    .map((item) => ({ item, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(({ item }) => item);
+}

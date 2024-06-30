@@ -149,7 +149,7 @@ const ExamPage: React.FC<ExamPageProps> = ({ exam, error }) => {
       } else {
         showModal(
           "CẢNH BÁO !",
-          "Rời khỏi bài thi nhiều lần sẽ bị tính là vi phạm quy chế thi !"
+          "Thay đổi focus cửa sổ làm bài được tính là vi phạm quy chế thi !"
         );
 
         dispatch(examActions.decreaseCredibilityScore(FLAGGED_ACTIONS_SCORE.WINDOW_FOCUS_CHANGE));
