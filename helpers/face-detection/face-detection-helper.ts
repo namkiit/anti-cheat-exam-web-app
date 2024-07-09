@@ -13,7 +13,7 @@ export const extractFaceCoordinates = (result: Results): FaceCoordinates => {
   }
 
   // result.detections[0].landmarks[i]
-  // i ---> landmark
+  // i ---> landmark index
   // 0 ---> Left Eye
   // 1 ---> Right Eye
   // 2 ---> Mouth
@@ -21,7 +21,7 @@ export const extractFaceCoordinates = (result: Results): FaceCoordinates => {
   // 4 ---> Left Ear
   // 5 ---> Right Ear
 
-  const [leftEye, rightEye, , , leftEar, rightEar] =
+  const [leftEye, rightEye, mouth, chin, leftEar, rightEar] =
     result.detections[0].landmarks;
 
   return {
