@@ -31,8 +31,7 @@ This is the my upgraded version of Prathamesh Mutkure's [Anti-Cheat Exam Web App
   - [Other Tools](#other)
 
 - [Important Points](#imp-points)
-- [Getting Started Instructions](#instructions)
-- [Test Cases](#test-cases)
+- [Getting Started](#instructions)
 - [Links](#links)
 - [Credit](#credit)
 - [Contact](#contact)
@@ -197,4 +196,4 @@ Base project belongs to Prathamesh Mutkure. You can know more about him at [Twit
 <a id="contact"> </a>
 ## Contact
 
-[![Facebook](https://img.shields.io/badge/Twitter-follow-blue.svg?logo=twitter&logoColor=white)](https://www.facebook.com/kiet.nam.56/) [![Instagram](https://img.shields.io/badge/Instagram-follow-purple.svg?logo=instagram&logoColor=white)](https://www.instagram.com/namkiit/)
+[![Facebook](https://img.shields.io/badge/Facebook-follow-blue.svg?logo=twitter&logoColor=white)](https://www.facebook.com/kiet.nam.56/) [![Instagram](https://img.shields.io/badge/Instagram-follow-purple.svg?logo=instagram&logoColor=white)](https://www.instagram.com/namkiit/)
