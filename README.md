@@ -31,7 +31,7 @@ This is the my upgraded version of Prathamesh Mutkure's [Anti-Cheat Exam Web App
   - [CMS App](#mobile)
   - [Other Tools](#other)
 
-- [Important Points](#imp-points)
+- [Important Notes](#imp-points)
 - [Getting Started](#instructions)
 - [Links](#links)
 - [Credit](#credit)
