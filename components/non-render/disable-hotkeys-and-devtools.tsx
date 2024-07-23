@@ -1,14 +1,15 @@
 import { useEffect } from 'react';
 
-const DisableDevTools = () => {
+const DisableHotkeysAndDevTools = () => {
     useEffect(() => {
         const disableDefault = (e: MouseEvent) => {
             e.preventDefault();
         };
 
-        const disableCopyAndOpenDevTools = (e: KeyboardEvent) => {
+        const disableHotkeys = (e: KeyboardEvent) => {
             if ((e.ctrlKey && e.key === 'c') || e.key === 'F12' || ctrlShiftKey(e, 'I') ||
-                ctrlShiftKey(e, 'J') || ctrlShiftKey(e, 'C') || (e.ctrlKey && e.keyCode === 'U'.charCodeAt(0))) {
+                ctrlShiftKey(e, 'J') || ctrlShiftKey(e, 'C') || (e.ctrlKey && e.keyCode === 'U'.charCodeAt(0)) ||
+                e.key === 'PrintScreen') {
                 e.preventDefault();
             }
         };
@@ -18,7 +19,7 @@ const DisableDevTools = () => {
         }
 
         document.addEventListener('contextmenu', disableDefault);
-        document.addEventListener('keydown', disableCopyAndOpenDevTools);
+        document.addEventListener('keydown', disableHotkeys);
 
         const detectDevTools = () => {
             const devtools = /./;
@@ -36,7 +37,7 @@ const DisableDevTools = () => {
 
         return () => {
             document.removeEventListener('contextmenu', disableDefault);
-            document.removeEventListener('keydown', disableCopyAndOpenDevTools);
+            document.removeEventListener('keydown', disableHotkeys);
             clearInterval(intervalId);
         };
     }, []);
@@ -44,4 +45,4 @@ const DisableDevTools = () => {
     return null; // This component doesn't render anything, it just sets up the event listeners
 };
 
-export default DisableDevTools;
+export default DisableHotkeysAndDevTools;

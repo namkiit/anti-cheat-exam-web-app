@@ -8,6 +8,7 @@ This is the my upgraded version of Prathamesh Mutkure's [Anti-Cheat Exam Web App
 - Disable Copy Paste, Print Screen and Open DevTools Hotkeys
 - DevTools Detection & Protection
 - Content Management System for Managing Exams, Questions & Students
+- Credibility Score System & View Exam Results
 
 <p  align="center">
 
@@ -27,7 +28,7 @@ This is the my upgraded version of Prathamesh Mutkure's [Anti-Cheat Exam Web App
 - [Tech Stack](#tech-stack)
   - [Front-end](#frontend)
   - [Backend](#backend)
-  - [Mobile App](#mobile)
+  - [CMS App](#mobile)
   - [Other Tools](#other)
 
 - [Important Points](#imp-points)
@@ -59,17 +60,20 @@ This is the my upgraded version of Prathamesh Mutkure's [Anti-Cheat Exam Web App
 
      <img width="1835" alt="Screenshot 2022-11-13 at 4 35 42 PM" src="https://user-images.githubusercontent.com/28570857/201518738-83d0e340-9394-42c5-b0fe-6770eea2009d.png">
   
-2. Dashboard <a id="dashboard"> </a>
+
+3. Dashboard <a id="dashboard"> </a>
 
 	- Shows bried information about all the exams assigned to the user
 
 	- The user can start an exam only at the correct timeslot
 
+  - If there are no exams available, you can go to the [CMS website](https://auto-proctoring-exam-cms.vercel.app/) to create a new one
+
     <img width="1835" alt="Screenshot 2022-11-13 at 4 37 01 PM" src="https://user-images.githubusercontent.com/28570857/201518882-8cdf77fb-25a1-4427-b3d5-d015d47a8829.png">
 
   
   
-3. Exam Page <a id="exam"> </a>
+4. Exam Page <a id="exam"> </a>
 
    - Simple and minimalistic exam page where the user can answer MCQ-based questions
 
@@ -82,8 +86,7 @@ This is the my upgraded version of Prathamesh Mutkure's [Anti-Cheat Exam Web App
 
   
   
-  
-7. AI-powered face motion detector <a id="face"> </a>
+5. AI-powered face motion detector <a id="face"> </a>
 
    - I've used Google's Mediapipe library to track the motion of the user's face
 
@@ -93,12 +96,8 @@ This is the my upgraded version of Prathamesh Mutkure's [Anti-Cheat Exam Web App
 
    - Thus, Face detection is fast and real-time
 
-  
-
       https://user-images.githubusercontent.com/28570857/205257552-5aa0235b-ddee-463a-b746-2ecc06ba8c4f.mp4
 
-  
-  
   
 
 ## Tech stack
@@ -123,21 +122,29 @@ This is the my upgraded version of Prathamesh Mutkure's [Anti-Cheat Exam Web App
 
 - MongoDB
 
+<a id="cms"> </a>
+#### Content Management System
+
+- Next.js (React)
+
+- TypeScript
+
 
 <a id="other"> </a>
 #### Other Tools
 
-- Google Mediapipe (Web)
-- Google on-device ML-Kit (Mobile)
+- Google Mediapipe
+
+- Next Auth with JWT
   
 
 <a id="imp-points"> </a>
 ## Important Notes
   
 
-1. First setup the backend by following the instructions in this [repository](https://github.com/prathamesh-mutkure/anti-cheat-app-backend)
+1. First setup the backend by following the instructions in this [repository](https://github.com/namkiit/auto-proctoring-exam-backend)
 
-2. The test username and password are given in the login form
+2. Use ID '20198235' and password 'namkiet3010' to login or you can create a new student account at [CMS application](https://github.com/namkiit/auto-proctoring-exam-cms)
 
 6. Allow **permissions** for camera and mic when asked
 
@@ -163,7 +170,7 @@ This is the my upgraded version of Prathamesh Mutkure's [Anti-Cheat Exam Web App
 
    -  `NEXTAUTH_SECRET`
 
-   -  `NEXTAUTH_URL`
+   -  `NEXTAUTH_URL` (must be identical to the url of the app)
 
 6. Run the app
 
